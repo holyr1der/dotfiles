@@ -84,6 +84,8 @@ Plugin 'tpope/vim-abolish'
 
 Plugin 'nvie/vim-flake8'
 
+Plugin 'vim-scripts/dbext.vim'
+
 " Plugin 'w0rp/ale'
 
 call vundle#end()
@@ -162,10 +164,11 @@ nnoremap <leader>d :bp\|bd #<CR>
 cmap w!! w !sudo tee % >/dev/null
 
 " ctrl-jklm  changes to that split
-map <c-j> <c-w>j
-map <c-k> <c-w>k
-map <c-l> <c-w>l
-map <c-h> <c-w>h
+" comment out and let vim-tmux-navigator handle this
+" map <c-j> <c-w>j
+" map <c-k> <c-w>k
+" map <c-l> <c-w>l
+" map <c-h> <c-w>h
 
 " map jj to escape in insert mode
 inoremap jj <Esc>
@@ -426,6 +429,9 @@ nnoremap <leader>S :keepjumps keeppatterns %s/\s\+$//e<CR>
 " Put the current word in command and replace it
 nnoremap <leader>s :%s/<C-r><C-w>/
 
+" Close all windows except this one
+nnoremap <leader>o :only<cr>
+
 " allows incsearch highlighting for range commands
 cnoremap $t <CR>:t''<CR>
 cnoremap $m <CR>:m''<CR>
@@ -528,3 +534,6 @@ command! -nargs=* Make make <args>
 "if filereadable($VIRTUAL_ENV . '/.vimrc')
 "    source $VIRTUAL_ENV/.vimrc
 "endif
+"
+"
+source ~/.vimrc-secret
