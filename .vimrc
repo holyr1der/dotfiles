@@ -86,6 +86,12 @@ Plugin 'nvie/vim-flake8'
 
 Plugin 'vim-scripts/dbext.vim'
 
+Plugin 'junegunn/fzf'
+
+Plugin 'junegunn/fzf.vim'
+
+Plugin 'majutsushi/tagbar'
+
 " Plugin 'w0rp/ale'
 
 call vundle#end()
@@ -106,38 +112,22 @@ command! W :w
 
 " sudo write this
 cmap W! w !sudo tee % >/dev/null
+cmap w!! w !sudo tee % >/dev/null
 cmap Wa wa
 
 " Abbreviations
 iabbrev pdb import ipdb; ipdb.set_trace()
 iabbrev cnx from context import Context<CR>Context('dev', 1, 'advertiser').api.advertiser.<ESC>5b
 iabbrev pp from pprint import pprint as pp; pp
-
-" Toggle the tasklist
-" map <leader>td <Plug>TaskList
+iabbrev curosr cursor
 
 " Run pep8
 let g:pep8_map='<leader>8'
-
-" run py.test's
-" nmap <silent><Leader>tf <Esc>:Pytest file<CR>
-" nmap <silent><Leader>tc <Esc>:Pytest class<CR>
-" nmap <silent><Leader>tm <Esc>:Pytest method<CR>
-" nmap <silent><Leader>tn <Esc>:Pytest next<CR>
-" nmap <silent><Leader>tp <Esc>:Pytest previous<CR>
-" nmap <silent><Leader>te <Esc>:Pytest error<CR>
 
 " ,v brings up my .vimrc
 " ,V reloads it -- making all changes active (have to save first)
 map <leader>v :sp ~/.vimrc<CR><C-W>_
 map <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
-
-" turn on spell check
-" nmap <F8> :setlocal spell spelllang=en<CR>
-
-" ∆ = Alt-j
-nnoremap ∆ :MultipleCursorsFind <C-r>/<CR>
-vnoremap ∆ :MultipleCursorsFind <C-r>/<CR>
 
 " copy whole file to system clipboard
 nmap <F10> gg"+yG
@@ -145,13 +135,52 @@ nmap <F10> gg"+yG
 " don't let cursor jump when yanking
 vnoremap <expr>y "my\"" . v:register . "y`y"
 
+" Paste/Yank from/to clipboard
+map <leader>p "+gP
+" map Y "+y
+
+" Quit window on <leader>q
+nnoremap <leader>q :q<CR>
+"
+" hide matches on <leader>space
+nnoremap <leader><space> :nohlsearch<cr>
+
+" Remove trailing whitespace on <leader>S
+nnoremap <leader>S :keepjumps keeppatterns %s/\s\+$//e<CR>
+
+" Put the current word in command and replace it
+nnoremap <leader>s :%s/<C-r><C-w>/
+
+" Close all windows except this one
+nnoremap <leader>o :only<cr>
+
+" allows incsearch highlighting for range commands
+cnoremap $t <CR>:t''<CR>
+cnoremap $m <CR>:m''<CR>
+cnoremap $d <CR>:d<CR>``
+
+" Easymotion bindings
+"nnoremap <leader><leader>l <Plug>(easymotion-bd-jk)
+nmap <leader>w <Plug>(easymotion-bd-w)
+nmap <leader>l <Plug>(easymotion-bd-jk)
+nmap <leader>j <Plug>(easymotion-sol-j)
+nmap <leader>k <Plug>(easymotion-sol-k)
+" nmap <leader>L <Plug>(easymotion-jumptoanywhere)
+
+" Replace current word in files
+" nmap <leader>R <Plug>CtrlSF
+nmap <leader>R <Plug>CtrlSFCwordPath<CR>
+
+" ∆ = Alt-j
+nnoremap ∆ :MultipleCursorsFind <C-r>/<CR>
+vnoremap ∆ :MultipleCursorsFind <C-r>/<CR>
+
 " open/close the quickfix window
 " let g:lt_location_list_toggle_map = '<leader>C'
 let g:lt_quickfix_list_toggle_map = '<leader>c'
 nmap <leader>C :pc!
 
-"nmap <leader>c :copen<CR>
-"nmap <leader>C :cclose<CR>
+" Unimpaired stuff
 nmap ]q :cnext<CR>
 nmap [q :cprevious<CR>
 nmap ]Q :clast<CR>
@@ -160,15 +189,16 @@ nmap [Q :cfirst<CR>
 " delete the current buffer without closing the split
 nnoremap <leader>d :bp\|bd #<CR>
 
-" for when we forget to use sudo to open/edit a file
-cmap w!! w !sudo tee % >/dev/null
-
 " ctrl-jklm  changes to that split
 " comment out and let vim-tmux-navigator handle this
 " map <c-j> <c-w>j
 " map <c-k> <c-w>k
 " map <c-l> <c-w>l
 " map <c-h> <c-w>h
+" and lets make these all work in insert mode too ( <C-O> makes next cmd
+"  happen as if in " command mode )
+" imap <C-W> <C-O><C-W>
+
 
 " map jj to escape in insert mode
 inoremap jj <Esc>
@@ -177,23 +207,27 @@ inoremap jj <Esc>
 " map [a <C-Y>
 " map [b <C-E>
 
-" and lets make these all work in insert mode too ( <C-O> makes next cmd
-"  happen as if in " command mode )
-imap <C-W> <C-O><C-W>
-
 " Open NerdTree
 map <leader>n :NERDTreeToggle<CR>
 
 " Run Ctrl-P file search
-map <leader>f :CtrlP<CR>
-map <leader>F :CtrlPMixed<CR>
-map <leader>b :CtrlPBuffer<CR>
-
-let g:ctrlp_working_path_mode = 'r'
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:20,results:20'
+" map <leader>f :CtrlP<CR>
+" map <leader>F :CtrlPMixed<CR>
+" map <leader>b :CtrlPBuffer<CR>
+"
+" let g:ctrlp_working_path_mode = 'r'
+" let g:ctrlp_clear_cache_on_exit = 0
+" let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:20,results:20'
 " let g:ctrlp_user_command = 'find %s -type f'
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
+" let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
+
+"
+" fzf fuzzy finder bindings
+map <leader>f :GFiles<cr>
+map <leader>F :Files<cr>
+map <leader>L :Lines<cr>
+map <leader>G :Commits<cr>
+map <leader>b :Buffers<cr>
 
 " Git grep with fugitive
 nmap <leader>a <Esc>:Ggrep <cword><CR>
@@ -202,10 +236,25 @@ nmap <leader>a <Esc>:Ggrep <cword><CR>
 nmap <leader>C :Gcommit<CR>
 
 " Ack searching
-nmap <leader>A <Esc>:Ack!<CR>
+" nmap <leader>A <Esc>:Ack!<CR>
+" Silever searcher
+nnoremap <leader>A :Ag <C-r><C-w><CR>
 
 " Load the Gundo window
 nnoremap <F5> :UndotreeToggle<CR>
+"
+" Spell checking
+nnoremap <F9> :setlocal spell spelllang=en<CR>
+
+" Highlight git changes
+nnoremap <F6> :GitGutterLineHighlightsToggle<CR>
+"
+" Toggle syntax hightlighting
+nnoremap <F7> :if exists("g:syntax_on") <Bar>
+    \   syntax off <Bar>
+    \ else <Bar>
+    \   syntax enable <Bar>
+    \ endif <CR>
 
 " Goto definition
 map <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
@@ -223,28 +272,13 @@ let g:ycm_python_binary_path = 'python'
 vnoremap <silent> # :s/^/#/<CR>:noh<CR>
 vnoremap <silent> -# :s/^#//<CR>:noh<CR>
 
-" map <F9> :TagbarToggle<CR>
-nmap <F9> :setlocal spell spelllang=en<CR>
-
-let g:tagbar_left=1
+let g:tagbar_left=0
 let g:tagbar_autoclose=0
 
 let g:Gitv_OpenHorizontal = 1
 let g:Gitv_DoNotMapCtrlKey = 1
 let g:Gitv_TruncateCommitSubjects = 1
 
-nmap <F6> :GitGutterLineHighlightsToggle<CR>
-map <F7> :if exists("g:syntax_on") <Bar>
-    \   syntax off <Bar>
-    \ else <Bar>
-    \   syntax enable <Bar>
-    \ endif <CR>
-
-" ==========================================================
-" Pathogen - Allows us to organize our vim plugins
-" ==========================================================
-" Plugins in the following list wont be loaded
-filetype off
 
 " ==========================================================
 " Basic Settings
@@ -286,9 +320,9 @@ nnoremap <leader>. :lcd %:p:h<CR>
 set completeopt=menuone,longest,preview
 set pumheight=10             " Keep a small completion window
 
-" show a line at column 101
+" show a line at column 121
 if exists("&colorcolumn")
-    set colorcolumn=101
+    set colorcolumn=121
 endif
 
 """ Moving Around/Editing
@@ -358,10 +392,16 @@ set incsearch               " Incrementally search while typing a /regex
 let g:solarized_termcolors=16
 let g:solarized_termtrans=1
 
+" Cursor settings.
+" curosrs for libvte terminals
+" Set IBeam shape in insert mode, underline shape in replace mode and block shape in normal mode.
+let &t_SI = "\<Esc>[6 q"
+let &t_SR = "\<Esc>[4 q"
+let &t_EI = "\<Esc>[2 q"
 " iTerm2 cursors
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+" let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+" let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+" let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 if has("gui_running")
     colorscheme solarized
@@ -412,40 +452,6 @@ set guioptions-=r
 set guioptions-=L
 set guioptions-=lrbmTLce
 set guioptions+=c
-
-" Paste/Yank from/to clipboard
-map <leader>p "+gP
-" map Y "+y
-
-" Quit window on <leader>q
-nnoremap <leader>q :q<CR>
-"
-" hide matches on <leader>space
-nnoremap <leader><space> :nohlsearch<cr>
-
-" Remove trailing whitespace on <leader>S
-nnoremap <leader>S :keepjumps keeppatterns %s/\s\+$//e<CR>
-
-" Put the current word in command and replace it
-nnoremap <leader>s :%s/<C-r><C-w>/
-
-" Close all windows except this one
-nnoremap <leader>o :only<cr>
-
-" allows incsearch highlighting for range commands
-cnoremap $t <CR>:t''<CR>
-cnoremap $m <CR>:m''<CR>
-cnoremap $d <CR>:d<CR>``
-
-"nnoremap <leader><leader>l <Plug>(easymotion-bd-jk)
-nmap <leader>w <Plug>(easymotion-bd-w)
-nmap <leader>l <Plug>(easymotion-bd-jk)
-nmap <leader>j <Plug>(easymotion-sol-j)
-nmap <leader>k <Plug>(easymotion-sol-k)
-nmap <leader>L <Plug>(easymotion-jumptoanywhere)
-
-" nmap <leader>R <Plug>CtrlSF
-nmap <leader>R <Plug>CtrlSFCwordPath<CR>
 
 " Select the item in the list with enter
 "inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
@@ -518,6 +524,29 @@ autocmd FileType qf wincmd J
 " If no errors, it closes any open cwindow.
 command! -nargs=* Make make <args>
 
+" Adjust quickfix window height
+au FileType qf call AdjustWindowHeight(3, 30)
+function! AdjustWindowHeight(minheight, maxheight)
+  exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
+endfunction
+au FileType qf setlocal cursorline
+
+" Send Ag output to quickfix window
+" CTRL-A CTRL-Q to select all and build quickfix list
+" function! s:build_quickfix_list(lines)
+"   call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+"   copen
+"   cc
+" endfunction
+" 
+" let g:fzf_action = {
+"   \ 'ctrl-q': function('s:build_quickfix_list'),
+"   \ 'ctrl-t': 'tab split',
+"   \ 'ctrl-x': 'split',
+"   \ 'ctrl-v': 'vsplit' }
+" 
+" let $FZF_DEFAULT_OPTS = '--bind ctrl-b:select-all'
+"
 "" Add the virtualenv's site-packages to vim path
 "py << EOF
 "import os.path
