@@ -28,19 +28,19 @@ Plugin 'flazz/vim-colorschemes'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
-Plugin 'ctrlpvim/ctrlp.vim'
+"Plugin 'ctrlpvim/ctrlp.vim'
 
 Plugin 'scrooloose/nerdtree'
 
 Plugin 'mileszs/ack.vim'
 
-Plugin 'zanglg/nova.vim'
+" Plugin 'zanglg/nova.vim'
 
 "Plugin 'dracula/vim'
 "
 "Plugin 'sosz/vim-darcula-theme'
 
-Plugin 'Valloric/YouCompleteMe'
+" Plugin 'Valloric/YouCompleteMe'
 
 " Plugin 'sjl/Gundo.vim'
 
@@ -50,27 +50,27 @@ Plugin 'mbbill/undotree'
 
 Plugin 'airblade/vim-gitgutter'
 
-Plugin 'gregsexton/gitv'
+" Plugin 'gregsexton/gitv'
 
 Plugin 'easymotion/vim-easymotion'
 
-Plugin 'yuttie/comfortable-motion.vim'
+" Plugin 'yuttie/comfortable-motion.vim'
 
-Plugin 'terryma/vim-multiple-cursors'
+" Plugin 'terryma/vim-multiple-cursors'
 
 Plugin 'dyng/ctrlsf.vim'
 
 Plugin 'Valloric/ListToggle'
 
-Plugin 'tmhedberg/simpylfold'
+"Plugin 'tmhedberg/simpylfold'
 
 Plugin 'tpope/vim-repeat'
 
-Plugin 'tpope/vim-surround'
+"Plugin 'tpope/vim-surround'
 
-Plugin 'okcompute/vim-python-motions'
+"Plugin 'okcompute/vim-python-motions'
 
-Plugin 'tommcdo/vim-fubitive'
+"Plugin 'tommcdo/vim-fubitive'
 
 Plugin 'ryanoasis/vim-devicons'
 
@@ -78,13 +78,13 @@ Plugin 'chrisbra/unicode.vim'
 
 Plugin 'christoomey/vim-tmux-navigator'
 
-Plugin 'tell-k/vim-autopep8'
+" Plugin 'tell-k/vim-autopep8'
 
 Plugin 'tpope/vim-abolish'
 
 Plugin 'nvie/vim-flake8'
 
-Plugin 'vim-scripts/dbext.vim'
+" Plugin 'vim-scripts/dbext.vim'
 
 Plugin 'junegunn/fzf'
 
@@ -406,7 +406,7 @@ let &t_EI = "\<Esc>[2 q"
 if has("gui_running")
     colorscheme solarized
 else
-    colorscheme solarized
+    colorscheme wombat256mod
 endif
 
 highlight multiple_cursors_cursor term=reverse cterm=reverse gui=reverse
@@ -432,7 +432,7 @@ endif
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#virtualenv#enabled = 1
-let g:airline_theme = 'solarized'
+let g:airline_theme = 'wombat'
 
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 
@@ -441,7 +441,10 @@ let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 
 "set guifont=PragmataPro\ for\ Powerline\ 10.5
 "set guifont=Cousine\ for\ Powerline:h14
-set guifont=Pragmata\ Pro\ Mono\ Regular\ Nerd\ Font:h16
+"set guifont=Pragmata\ Pro\ Mono\ Font:h16
+if has('gui_running')
+    set guifont=Pragmata\ Pro\ Mono\ 10
+endif
 
 set nocursorline
 
@@ -565,4 +568,3 @@ au FileType qf setlocal cursorline
 "endif
 "
 "
-source ~/.vimrc-secret
